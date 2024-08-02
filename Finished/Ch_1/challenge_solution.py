@@ -14,6 +14,30 @@ import json
 with open("../../30DayQuakes.json", "r", encoding="utf-8") as datafile:
     data = json.load(datafile)
 
+#MY solution
+# 1: How many quakes are there in total?
+total_quakes = len(data["features"])
+print(f"Total quakes: {total_quakes}")
+
+# 2: How many quakes were felt by at least 100 people?
+quakes_felt_by_100 = [quake for quake in data["features"] if quake["properties"].get("felt", 0) >= 100]
+print(f"Total quakes felt by at least 100 people: {len(quakes_felt_by_100)}")
+
+# 3: Print the name of the place whose quake was felt by the most people, with the # of reports
+most_felt_quake = max(data["features"], key=lambda quake: quake["properties"].get("felt", 0))
+most_felt_place = most_felt_quake["properties"]["title"]
+most_felt_reports = most_felt_quake["properties"]["felt"]
+print(f"Most felt reports: {most_felt_place}, reports: {most_felt_reports}")
+
+# 4: Print the top 10 most significant events
+top_significant_events = sorted(data["features"], key=lambda quake: quake["properties"].get("sig", 0), reverse=True)
+print("The 10 most significant events were:")
+for quake in top_significant_events[:10]:
+    title = quake["properties"]["title"]
+    significance = quake["properties"]["sig"]
+    print(f"Event: {title}, Significance: {significance}")
+
+#Professional solution analysis
 # 1: We can just use the provided data, or we can use len() to get the length of the "features"
 print(f"Total quakes: {data['metadata']['count']}")
 
